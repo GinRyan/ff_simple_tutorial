@@ -14,23 +14,18 @@ message(------------------------------------------------------------------------
 
 # It's not recommend to use MinGW on Windows. Because MinGW's make will crash in unknown issue when you build it.
 
-set(WhereIsFFMPEGLibRoot ../ffmpeg-dev)
-set(WhereIsSDLLibRoot ../SDL-dev)
+set(WhereIsFFMPEGLibRoot ffmpeg-dev)
+set(WhereIsSDLLibRoot SDL-dev)
 
 set(FFMpegIncludeHeaders ${PROJECT_DIR}/${WhereIsFFMPEGLibRoot}/include)
 set(FFMpegLibraryFiles ${PROJECT_DIR}/${WhereIsFFMPEGLibRoot}/lib)
 set(SDLIncludeHeaders ${PROJECT_DIR}/${WhereIsSDLLibRoot}/include)
 set(SDLLibraryFiles ${PROJECT_DIR}/${WhereIsSDLLibRoot}/lib)
 
-
 include_directories( ${FFMpegIncludeHeaders})
 include_directories( ${FFMpegLibraryFiles})
 include_directories( ${SDLIncludeHeaders})
 include_directories( ${SDLLibraryFiles})
-#-I${FFMpegIncludeHeaders}   -L${FFMpegLibraryFiles} -mwindows -Wall -D__WIN32__
-#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g  -O2  -I${SDLIncludeHeaders}  -I${FFMpegIncludeHeaders} -L${FFMpegLibraryFiles} -L${SDLLibraryFiles}  -lSDLmain -lSDL  -lavcodec")
-
-#message(${CMAKE_C_FLAGS})
 
 message(Project Locating At: ${PROJECT_DIR})
 message(FFMPEG Headers Locating At: ${FFMpegIncludeHeaders})
