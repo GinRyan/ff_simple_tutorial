@@ -1,4 +1,7 @@
 #ifndef ERRFLAGS_H
 #define ERRFLAGS_H
 
+#define IO_FILE_ERROR_OPEN_FAILED -1
+#define FF_ERROR_INITIAL_FAILED -10
+
 #endif // ERRFLAGS_H

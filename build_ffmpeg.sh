@@ -19,7 +19,6 @@ export OUT_PREFIX=`pwd`/../ffmpeg-dev
  	--disable-gpl \
 	--enable-static \
 	--enable-shared \
-	--enable-pic \
 
 make -j`cat /proc/cpuinfo|grep processor|wc -l` & make install
 cd ..

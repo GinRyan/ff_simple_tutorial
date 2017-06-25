@@ -61,8 +61,21 @@ set_target_properties(libswresample PROPERTIES IMPORTED_LOCATION ${FFMpegLibrary
 add_library(libswscale SHARED IMPORTED)
 set_target_properties(libswscale PROPERTIES IMPORTED_LOCATION ${FFMpegLibraryFiles}/libswscale.a)
 
-set(CMainSources  "main.c")
+set(libSrc "util.c")
+add_library(ffmpegAll ${libSrc})
 
-add_executable(helloFFmpeg ${CMainSources})
-target_link_libraries(helloFFmpeg libSDL2 libSDL2main libavcodec libavdevice libavfilter libavformat  libswresample libswscale libavutil  m pthread dl z lzma )
+target_link_libraries(ffmpegAll libSDL2 libSDL2main libavcodec libavdevice libavfilter libavformat  libswresample libswscale libavutil  m pthread dl z lzma )
+message("ffmpeg library setting ok!")
 message(----------------------------------------------------------------------------------)
+
+
+set(CMainSources  "main.c")
+#add_executable(helloFFmpeg ${CMainSources})
+#target_link_libraries(helloFFmpeg ffmpegAll)
+
+set(ENCODEYUV "encodefromyuvtoh264.c")
+add_executable(encoderYUVtoH264 ${ENCODEYUV})
+target_link_libraries(encoderYUVtoH264 ffmpegAll)
+
+
+
