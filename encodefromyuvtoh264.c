@@ -146,27 +146,32 @@ int main(int argc,char **argv){
         read_yuv_data(2);
         frame->pts = frameIdx;
 
-        if (avcodec_encode_video2(codecCtx,&pkt,frame,&got_packet)<0) {
-            printf("Error: Encoding failed!\n");
+        int localAvcodec_send_frame = avcodec_send_frame(codecCtx,frame);
+        if (localAvcodec_send_frame<0) {
+            printf("Error: Sending failed!\n");
             return  FF_ERROR_ENCODING_FAILED;
         }
-        if(got_packet){
+
+        int localAvcodec_receive_packet = avcodec_receive_packet(codecCtx,&pkt);
+        if(localAvcodec_receive_packet>=0){
             printf("write packet to frame:%d, size=%d \n",frameIdx,pkt.size);
             fwrite(pkt.data,1,(unsigned long)pkt.size,pFout);
             av_packet_unref(&pkt);
         }
+
     }
-    for (got_packet=1;got_packet;) {
-        if (avcodec_encode_video2(codecCtx,&pkt,NULL,&got_packet)<0) {
-            printf("Error: Encoding failed!\n");
-            return  FF_ERROR_ENCODING_FAILED;
-        }
-        if(got_packet){
-            printf("write cached packet size=%d \n",pkt.size);
-            fwrite(pkt.data,1,(unsigned long)pkt.size,pFout);
-            av_packet_unref(&pkt);
+    //if there's undone frames in cache, do it.
+    while (1) {
+        int hasReceivedPacket = avcodec_receive_packet(codecCtx,&pkt);
+        printf("write cached frame size=%d \n",pkt.size);
+        fwrite(pkt.data,1,(unsigned long)pkt.size,pFout);
+        av_packet_unref(&pkt);
+
+        if (hasReceivedPacket < 0) {
+            break;
         }
     }
+
     //close file
     fclose(pFin);
     fclose(pFout);
