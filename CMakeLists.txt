@@ -70,8 +70,8 @@ message(------------------------------------------------------------------------
 
 
 set(CMainSources  "main.c")
-#add_executable(helloFFmpeg ${CMainSources})
-#target_link_libraries(helloFFmpeg ffmpegAll)
+add_executable(helloFFmpeg ${CMainSources})
+target_link_libraries(helloFFmpeg ffmpegAll)
 
 set(ENCODEYUV "encodefromyuvtoh264.c")
 add_executable(encoderYUVtoH264 ${ENCODEYUV})
