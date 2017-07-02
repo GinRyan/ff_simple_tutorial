@@ -147,9 +147,14 @@ int main(int argc, char *argv[]){
             //parse ok
             printf("parse 1 packet\n");
 
+            int duration = pCodecParserCtx->duration;
+            int dts = pCodecParserCtx->cur_frame_dts;
+            int pts = pCodecParserCtx->cur_frame_pts;
+
+            printf("Duration: %d PTS:%d, DTS: %d\n" , duration, pts, dts);
+
             int ret = avcodec_send_packet(pContext,&pkt);
             if (ret < 0) {
-
                 return -1;
             }
 
@@ -160,7 +165,7 @@ int main(int argc, char *argv[]){
                     break;
                 }
             }
-            printf("Decode 1 frame OK~: width:%d  height:%d pts: %ld\n",frame->width,frame->height,frame->pts);
+            printf("Decode 1 frame OK~: width:%d  height:%d \n",frame->width,frame->height);
             write_out_yuv_frame(frame);
         }
     }
