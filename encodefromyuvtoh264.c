@@ -35,7 +35,14 @@ AVCodecContext* codecCtx= NULL;
 AVFrame* frame = NULL;
 //video and audio packet after encoding.
 AVPacket pkt;
-
+/**
+ * ./encoderYUVtoH264  out.yuv out1.h264 640 416 800000 1600
+ *
+ * @brief parse_input_parameters
+ * @param argc
+ * @param argv
+ * @return
+ */
 static int parse_input_parameters(int argc,char **argv){
     for (int i = 0;i < argc;i++) {
         printf("argv[%d]: %s\n",i,argv[i]);
@@ -105,7 +112,7 @@ int main(int argc,char **argv){
     codecCtx->bit_rate = bitrate;
 
     codecCtx->time_base = av_make_q(1,25);
-    codecCtx->gop_size = 12;
+    codecCtx->gop_size = 3;
     codecCtx->max_b_frames = 1;
     codecCtx->pix_fmt = AV_PIX_FMT_YUV420P;
 

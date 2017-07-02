@@ -78,4 +78,6 @@ add_executable(encoderYUVtoH264 ${ENCODEYUV})
 target_link_libraries(encoderYUVtoH264 ffmpegAll)
 
 
-
+set(DecodeYUV "decodingtoyuv.c")
+add_executable(DecodeToYUV ${DecodeYUV})
+target_link_libraries(DecodeToYUV ffmpegAll)
