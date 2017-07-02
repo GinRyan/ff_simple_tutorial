@@ -147,38 +147,21 @@ int main(int argc, char *argv[]){
             //parse ok
             printf("parse 1 packet\n");
 
-            int ret = avcodec_decode_video2(pContext,frame, &got_frame,&pkt);
+            int ret = avcodec_send_packet(pContext,&pkt);
             if (ret < 0) {
-                printf("Error: decode packet error");
+
                 return -1;
             }
 
-            if (got_frame) {
-                //Write
-                printf("Decode 1 frame OK~: width:%d  height:%d pts: %ld\n",frame->width,frame->height,frame->pts);
-                write_out_yuv_frame(frame);
-            }else {
-                break;
+            int outret = avcodec_receive_frame(pContext,frame);
+            if (outret < 0) {
+                if (outret == AVERROR_EOF) {
+                    printf("decode finished");
+                    break;
+                }
             }
-
-        }
-    }
-
-    pkt.data = NULL;
-    pkt.size = 0;
-    while (1) {
-        int ret = avcodec_decode_video2(pContext,frame, &got_frame,&pkt);
-        if (ret < 0) {
-            printf("Error: decode packet error");
-            return -1;
-        }
-        if (got_frame) {
-            //Write
-            printf("Flush: decode 1 frame OK~: width:%d  height:%d  pts: %ld\n",frame->width,frame->height,frame->pts);
+            printf("Decode 1 frame OK~: width:%d  height:%d pts: %ld\n",frame->width,frame->height,frame->pts);
             write_out_yuv_frame(frame);
-
-        }else {
-            break;
         }
     }
 
